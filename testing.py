@@ -24,10 +24,10 @@ app.config.update(
     # Flask-Dropzone config:
     # DROPZONE_ALLOWED_FILE_TYPE='image',
     DROPZONE_MAX_FILE_SIZE=3,
-    DROPZONE_MAX_FILES=30,
+    DROPZONE_MAX_FILES=10,
     DROPZONE_IN_FORM=True,
     DROPZONE_UPLOAD_ON_CLICK=True,
-    DROPZONE_UPLOAD_ACTION='handle_upload',  # URL or endpoint
+    DROPZONE_UPLOAD_ACTION='handle_form',  # URL or endpoint
     DROPZONE_UPLOAD_BTN_ID='submit',
     DROPZONE_REDIRECT_VIEW='handle_form',
 )
@@ -53,17 +53,18 @@ def handle_upload():
     for key, f in request.files.items():
         if key.startswith('file'):
             f.save(os.path.join(app.config['UPLOADED_PATH'], f.filename))
-            print("filename is: ")
-            print(f.filename)
+            # print("filename is: ")
+            # print(f.filename)
     return '', 204
 
 #result page
 @app.route('/form', methods=['POST'])
 def handle_form():
 
-    try:
-        title = request.form.get('title')
-        description = request.form.get('description')
+    # try:
+    if request.method == 'POST':
+        # title = request.form.get('title')
+        # description = request.form.get('description')
 
         sourcelanguage_selected = request.form.get('sourcelanguage')
         print(sourcelanguage_selected)
@@ -71,11 +72,110 @@ def handle_form():
         print(targetlanguage_selected)
 
         files_uploaded = request.files
-        print(files_uploaded)  #no value
+        # print(files_uploaded)  #no value
         files_uploaded_test = request.form
         print(files_uploaded_test)
         testing = request.files.items()
+        print("testing")
         print(testing)
+
+        uploadedfile_list = []
+        for key, f in request.files.items():
+            if key.startswith('file'):
+                f.save(os.path.join(app.config['UPLOADED_PATH'], f.filename))
+                print("name of the files are: ")
+                print(f.filename)
+                uploadedfile_list.append(f.filename)
+
+        print("uploadedfile_list is: ")
+        print(uploadedfile_list)  #list
+
+        project_data = {
+                "project_name": "NEWDOCUMENT",
+                "source_lang": sourcelanguage_selected,
+                "target_lang": targetlanguage_selected
+            }
+
+       
+        
+        print("this is the file name")
+        
+        time.sleep(10)
+        
+        
+        files_data = [
+            ('file1', ('testfile.txt', #name of the uploading file
+                    open('testfile.txt', 'rb'), #file data
+                    'application/octet-stream')),
+            ('file2', ('noneditable_example.pdf', #name of the uploading file
+                    open('noneditable_example.pdf', 'rb'), #file data
+                    'application/octet-stream'))
+        ]
+        
+        
+        
+
+        
+
+        r_post = requests.post('https://www.matecat.com/api/v1/new',
+            data = project_data,
+            files = files_data
+        )
+
+
+
+        print(r_post.status_code)
+        pprint.pprint(r_post.json())
+        created_info = r_post.json()
+        print(type(created_info))  #dict
+
+        id = created_info['id_project']
+        pass_code = created_info['project_pass']
+
+        print(id)
+        print(pass_code)
+
+        get_data = {
+            "id_project": id,
+            "project_pass": pass_code
+        }
+
+
+        time.sleep(5)
+
+        r_get = requests.get('https://www.matecat.com/api/status',
+            params = get_data)
+
+        print(r_get.status_code)
+        # pprint.pprint(r_get.json())
+        statistics = r_get.json()
+        print(type(statistics)) #dict
+
+        maindata = statistics['data']
+        print(type(maindata)) #dict
+        print(maindata)
+
+        total_word_count = maindata['summary']['TOTAL_RAW_WC']
+        print(round(total_word_count))
+        industry_weighted = maindata['summary']['TOTAL_STANDARD_WC']
+        print(round(industry_weighted))
+        weighted_words = maindata['summary']['TOTAL_PAYABLE']
+        print(round(weighted_words))
+        percentage = weighted_words / total_word_count
+        print(percentage)
+        discount_percentage = round((1 - percentage) * 100)
+        print(discount_percentage)
+
+
+        return 'file uploaded successfully ' + str(total_word_count) + "  " + str(discount_percentage)
+
+
+
+        # files = {
+        #         'file': (f.filename, #name of the uploading file
+        #                 open(f.filename, 'rb'), #file data
+        #                 'application/octet-stream')  #file type
+        #     }
 
         
         
@@ -93,10 +193,11 @@ def handle_form():
         # print("type is:")
         # print(type(f.filename)) #string
 
-        return 'file uploaded and form submit<br>title: %s<br> description: %s' % (title, description)
+        # return 'file uploaded and form submit<br>title: %s<br> description: %s' % (title, description)
+        return "success"
 
-    except requests.RequestException as e:
-        print(e)
+    # except requests.RequestException as e:
+    #     print(e)
 
 
 
