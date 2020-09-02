@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 app.config.update(
     #uncomment below when deploying on heroku
-    # UPLOADED_PATH=os.path.join(basedir, 'uploads'),
+    UPLOADED_PATH=os.path.join(basedir, 'uploads'),
     
     
     # Flask-Dropzone config:
@@ -71,6 +71,7 @@ def handle_form():
         targetlanguage_selected = request.form.get("targetlanguage")
         print(targetlanguage_selected)
 
+        time.sleep(5)
         files_uploaded = request.files
         # print(files_uploaded)  #no value
         files_uploaded_test = request.form
@@ -141,7 +142,7 @@ def handle_form():
         }
 
 
-        time.sleep(5)
+        time.sleep(10)
 
         r_get = requests.get('https://www.matecat.com/api/status',
             params = get_data)
