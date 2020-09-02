@@ -1,0 +1,14 @@
+venv/
+test/
+uploads/
+access_token.txt
+createproject.py
+Excel.xlsx
+fillable_example.pdf
+indextest.html
+maincopy.py
+matecat.py
+noneditable_example.pdf
+sample.json
+test.py
+testfile.txt

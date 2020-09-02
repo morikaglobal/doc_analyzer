@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Translation Document Analyzer</title>
+    <!-- {{ dropzone.load_css() }}
+    {{ dropzone.style('border: 2px dashed #0087F7; margin: 10px 0 10px; min-height: 400px; width: 800px') }} -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {{ dropzone.load() }}
+    {{ dropzone.style('border:2px dashed black; margin: 20px 20%; min-height: 200px;') }}
+</head>
+
+
+<body>
+
+    <div class="container p-3 my-3">
+        <div class="page-top px-4">
+            <h4>TRANSLATION DOCUMENT WORD COUNTER</h4>
+
+            <h6>Step 1: Upload your files for translation:</h6>
+            <!-- {{ dropzone.create(action_view='index') }}
+                     -->
+
+            <!-- for heroku deployment
+                    <form action="/result" method="POST" enctype="multipart/form-data"> -->
+
+            <!-- for localhost -->
+            <form action="{{ url_for('handle_form') }}" enctype="multipart/form-data" method="post">
+
+                {{ dropzone.create() }}
+                
+                <h6>Step 2: Translate above file(s) from</h6>
+                <select name="sourcelanguage">
+                    {% for source, value in data %}
+                    <option value="{{ value }}">{{ source }}</option>
+                    {% endfor %}
+
+                </select>
+                <span>To</span>
+                <select name="targetlanguage">
+                    {% for target, value in data2 %}
+                    <option value="{{ value }}">{{ target }}</option>
+                    {% endfor %}
+                </select>
+
+                <br><br>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" /><br>
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" /><br>
+                <input type="submit" id="submit" value="Submit and Upload">
+            </form>
+            <span>Please visit my <a href="https://www.morikaglobal.com" target="_blank">Portfolio site</a> or <a
+                    href="https://github.com/morikaglobal/newsdatasummary_app" target="_blank">my github </a> for the
+                code of this app.</span>
+
+        </div>
+
+    </div>
+    {{ dropzone.load_js() }}
+    {{ dropzone.config() }}
+</body>
+
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>Flask App</title>
+        {{ dropzone.load() }}
+    {{ dropzone.style('border: 2px dashed #0087F7; margin: 10%; min-height: 400px;') }}
+    </head>
+    <body>
+        <h1>Hello from Flask! TESTING</h1>
+
+
+
+        <form action="http://localhost:5000/result" method="POST" enctype="multipart/form-data">
+            
+            <br>
+            {{ dropzone.create(action_view='index2') }}
+            {{ dropzone.config()}}
+
+            <input type="file" name="file" />
+            <input type="submit" />
+        </form>
+    </body>
+</html> -->
