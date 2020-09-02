@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 app.config.update(
     #uncomment below when deploying on heroku
-    UPLOADED_PATH=os.path.join(basedir, 'uploads'),
+    # UPLOADED_PATH=os.path.join(basedir, 'uploads'),
     
     
     # Flask-Dropzone config:
