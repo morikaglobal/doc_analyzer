@@ -1,6 +1,5 @@
 venv/
 test/
-uploads/
 access_token.txt
 createproject.py
 Excel.xlsx
