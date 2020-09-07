@@ -1,9 +1,57 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Flask App</title>
-    </head>
-    <body>
-        <h1>This is result page</h1>
-    </body>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Translation Document Analyzer</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> -->
+</head>
+
+<body>
+    <div class="container p-3 my-3">
+        <div class="page-top px-4">
+            <h3>TRANSLATION DOCUMENT ANALYZER</h3>
+        </div>
+
+        <div class="container news_list px-5 pb-2">
+            <div class="container page-top px-4">
+                <h5>Analysis report for the documents you uploaded</h5>
+                <h5>Translate From <strong><span>{{ sourcelanguage_text }}</span></strong> To
+                    <strong><span>{{ targetlanguage_text }}</span></strong></h5>
+            </div>
+
+
+            {% for display_data in data_array %}
+
+            <div class="card mt-3">
+                <h5 class="card-header">File name: <strong>{{ display_data["documentname"] }}</strong></h5>
+                <div class="card-body">
+                    <h7 class="card-title"><strong>Total Word
+                            Count: </strong>{{ display_data["totalwordcount"] }}</h7><br>
+                    <h7 class="card-title"><strong>Industry
+                            weighted: </strong>{{ display_data["industryweighted"] }}</h7><br>
+                    <h7 class="card-title"><strong>CAT weighted:
+                            <span>{{ display_data["weightedwords"] }}</span></strong></h7><br>
+                    <h7 class="card-title"><strong><span>{{ display_data["discountpercentage"] }}% Saving on word
+                                count</span></strong></h7><br>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+        <br>
+        <div class="text-center">
+
+            <p>Please visit my <a href="https://www.morikaglobal.com" target="_blank">Portfolio site</a> or <a
+                    href="https://github.com/morikaglobal/doc_analyzer" target="_blank">my github </a> for the code of this app</p>
+        </div>
+    </div>
+
+</body>
+
 </html>

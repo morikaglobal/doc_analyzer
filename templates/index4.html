@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Translation Document Analyzer</title>
+
+    {{ dropzone.load_css() }}
+    {{ dropzone.style('border: 2px dashed #0087F7; margin: 20px 20%; min-height: 200px') }}
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+
+</head>
+
+
+<div class="container p-3 my-3">
+    <div class="page-top px-4">
+        <h4>TRANSLATION DOCUMENT ANALYZER</h4>
+
+        <h6>Step 1: Upload your documentations for translation<br>
+            (you can upload up to 3 files, max size of a file is 16MB)</h6>
+
+        <form action="{{ url_for('handle_form') }}" enctype="multipart/form-data" method="post">
+
+            {{ dropzone.create() }}
+
+            <h6>Step 2: Translating uploaded document(s) from</h6>
+            <select name="sourcelanguage">
+                {% for source, value in data %}
+                <option value="{{ value }}">{{ source }}</option>
+                {% endfor %}
+
+            </select>
+            <strong>To</strong>
+            <select name="targetlanguage">
+                {% for target, value in data2 %}
+                <option value="{{ value }}">{{ target }}</option>
+                {% endfor %}
+            </select>
+
+            <br><br>
+
+            <input type="submit" id="submit" class="btn btn-primary btn-lg" value="Analyze for translation">
+        </form>
+        <br>
+        <p>Please visit my <a href="https://www.morikaglobal.com" target="_blank">Portfolio site</a> or <a
+                href="https://github.com/morikaglobal/doc_analyzer" target="_blank">my github </a> for the
+            code of this app</p>
+
+    </div>
+
+</div>
+{{ dropzone.load_js() }}
+{{ dropzone.config() }}
+</body>
+
+</html>
